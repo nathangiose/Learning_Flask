@@ -84,7 +84,7 @@ footer {
 }
 
 .btn-submit {
-    background-color: cornflowerblue;
+    background-color: green;
     color: white;
     padding: 16px 20px;
     margin: 8px 0;
@@ -97,3 +97,6 @@ footer {
     opacity: 1;
 }
 
+.error-message {
+    color: red;
+}
