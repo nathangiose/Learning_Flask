@@ -18,11 +18,15 @@ def index():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        if request.form.get("email") == "test@uta.com":
-            flash("You successfully logged in!", "Success")
+        email = form.email.data
+        password = form.password.data
+
+        user = User.objects(email=email).first()
+        if user and user.get_password(password):
+            flash(f"{user.first_name}, you successfully logged in!", "success")
             return redirect("/index")
         else:
-            flash("Invalid, something went wrong.", "Danger")
+            flash("Invalid, something went wrong.", "danger")
     return render_template("login.html", title="Login", form=form, login=True)
 
 

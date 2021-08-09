@@ -8,6 +8,7 @@ class User(db.Document):
     first_name = db.StringField(max_length=50)
     last_name = db.StringField(max_length=50)
     email = db.StringField(max_length=30, unique=True)
+    # A maximum amount could've been added, but because I'm using Hash Password, it won't work
     password = db.StringField()
 
     def set_password(self, password):
