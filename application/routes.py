@@ -1,5 +1,5 @@
 from application import app, db
-from flask import render_template, request, json, Response, redirect, flash
+from flask import render_template, request, json, Response, redirect, flash, url_for
 from application.models import User, Enrollment, Course
 from application.forms import LoginForm, RegisterForm
 
@@ -45,9 +45,26 @@ def enrollment():
     return render_template("enrollment.html", enrollment=True, data={"id": id, "title": title, "term": term})
 
 
-@app.route("/register")
+@app.route("/register", methods=["POST", "GET"])
 def register():
-    return render_template("register.html")
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user_id = User.objects.count()
+        user_id += 1
+
+        email = form.email.data
+        password = form.password.data
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+
+        user = User(user_id=user_id, email=email,
+                    first_name=first_name, last_name=last_name)
+        user.set_password(password)
+        user.save()
+        flash("You have been succcessfully registered!", "success")
+        return redirect(url_for("index"))
+
+    return render_template("register.html", form=form, register=True, title="Register")
 
 
 @app.route("/api/")
