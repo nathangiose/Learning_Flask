@@ -13,6 +13,8 @@ body {
     height: 100%;
     position: relative;
     margin:0px;
+    background: black;
+    color: white;
 }
 
 header {
@@ -26,7 +28,7 @@ li {
 
 a {
     text-decoration: none;
-    color: blue;
+    color: green;
 }
 
 a:hover { color : red;}
@@ -56,15 +58,17 @@ input[type=text]:focus, input[type=password]:focus {
 }
 
 .top-container {
-    background: #ccc;
-    padding:5px;
-    border-bottom:2px solid #0f0f0f;
+    background: black;
+    padding: 5px;
+    border-bottom: 2px solid #0f0f0f;
+    border: 2px solid #0f0f0f;
 }
+
 .bottom-container {
     background: #333;
     padding:5px;
     border-top:2px solid #0f0f0f;
-    /* position:absolute; */
+    position:fixed;
     bottom:0;
 }
 
@@ -100,4 +104,17 @@ footer {
 
 .error-message {
     color: red;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: green;
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    padding-left: 0px;
+    margin-bottom: 0px;
+    list-style: none;
 }
