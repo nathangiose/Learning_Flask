@@ -70,6 +70,7 @@ input[type=text]:focus, input[type=password]:focus {
     border-top:2px solid #0f0f0f;
     position:fixed;
     bottom:0;
+    display: contents;
 }
 
 .container-term {
@@ -85,6 +86,7 @@ footer {
     padding: 5px;
     margin-top: 10px;
     bottom: 0px;
+    z-index: 99999;
     /* position: absolute; */
 }
 
@@ -118,3 +120,4 @@ footer {
     margin-bottom: 0px;
     list-style: none;
 }
+
