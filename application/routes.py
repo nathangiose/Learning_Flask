@@ -1,5 +1,5 @@
 from application import app, db
-from flask import render_template, request, json, Response, redirect, flash, url_for
+from flask import render_template, request, json, Response, redirect, flash, url_for, session
 from application.models import User, Enrollment, Course
 from application.forms import LoginForm, RegisterForm
 
@@ -16,6 +16,9 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if session.get('username'):
+        return redirect(url_for("index"))
+
     form = LoginForm()
     if form.validate_on_submit():
         email = form.email.data
@@ -24,6 +27,8 @@ def login():
         user = User.objects(email=email).first()
         if user and user.get_password(password):
             flash(f"{user.first_name}, you successfully logged in!", "success")
+            session['user_id'] = user.user_id
+            session['username'] = user.first_name
             return redirect("/index")
         else:
             flash("Invalid, something went wrong.", "danger")
@@ -43,7 +48,7 @@ def courses(term=None):
 def enrollment():
     courseID = request.form.get('courseID')
     courseTitle = request.form.get('title')
-    user_id = 1
+    user_id = 2
 
     if courseID:
         if Enrollment.objects(user_id=user_id, courseID=courseID):
@@ -96,6 +101,8 @@ def enrollment():
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
+    if session.get('username'):
+        return redirect(url_for("index"))
     form = RegisterForm()
     if form.validate_on_submit():
         user_id = User.objects.count()
