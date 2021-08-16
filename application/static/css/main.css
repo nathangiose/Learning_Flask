@@ -121,3 +121,11 @@ footer {
     list-style: none;
 }
 
+.user{
+    float: right;
+    position: fixed;
+    font-size: 30px;
+    right: 10em;
+    top: 2em;
+    color: green;
+}

@@ -1,10 +1,40 @@
-from application import app, db
-from flask import render_template, request, json, Response, redirect, flash, url_for, session
+from application import app, db, api
+from flask import render_template, request, json, Response, redirect, flash, url_for, session, jsonify
 from application.models import User, Enrollment, Course
 from application.forms import LoginForm, RegisterForm
+from flask_restplus import Resource
+
 
 courseData = [{"courseID": "1", "title": "PHP 101", "description": "Intro to PHP", "credits": 3, "term": "Fall, Spring"}, {"courseID": "2", "title": "Java 1", "description": "Intro to Java Programming", "credits": 4, "term": "Spring"}, {"courseID": "3", "title": "Adv PHP 201",
                                                                                                                                                                                                                                              "description": "Advanced PHP Programming", "credits": 3, "term": "Fall"}, {"courseID": "4", "title": "Angular 1", "description": "Intro to Angular", "credits": 3, "term": "Fall, Spring"}, {"courseID": "5", "title": "Java 2", "description": "Advanced Java Programming", "credits": 4, "term": "Fall"}]
+
+#######################################
+
+@api.route('/api','/api/')
+class GetAndPost(Resource):
+
+    #GET ALL
+    def get(self):
+        return jsonify(User.objects.all())
+
+    #POST
+    def post(self):
+        data = api.payload
+        user = User(user_id=data['user_id'], email=data['email'], first_name=data['first_name'], last_name=data['last_name'])
+        user.set_password(data['password'])
+        user.save()
+        return jsonify(User.objects(user_id=data['user_id']))
+
+@api.route('/api/<idx>')
+class GetUpdateDelete(Resource):
+
+    #GET ONE
+    def get(self,idx):
+        return jsonify(User.objects(user_id=idx))
+        
+
+#######################################
+
 
 
 @app.route("/")
@@ -17,7 +47,7 @@ def index():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if session.get('username'):
-        return redirect(url_for("index"))
+        return redirect(url_for('index'))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -38,8 +68,8 @@ def login():
 @app.route("/logout")
 def logout():
     session['user_id'] = False
-    session['username', None]
-    return redirect(url_for("index"))
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
 
 @app.route("/courses/")
